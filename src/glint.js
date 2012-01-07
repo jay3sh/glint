@@ -2,13 +2,34 @@
 
 (function () {
 
-var rawlink = document.getElementById('raw-url');
 
-$('.big-actions').append(
-'<li>&nbsp;<a class="minibutton" id="dolint" href="#" style="display: inline-block; "><span>Lint this file</span></a></li>'
-);
+function addLintButton() {
+  if($('.big-actions:first #dolint').length == 0) {
+    $('.big-actions:first').append(
+    '<li>&nbsp;<a class="minibutton" id="dolint" href="#" '+
+    'style="display: inline-block; "><span>Lint this file</span></a></li>');
+    $('#dolint').click(doLint);
+  }
+}
+function removeLintButton() {
+  $('.big-actions #dolint').remove();
+}
+//if(/.*\.js\/$/.test($('#slider').find('.breadcrumb:last').attr('data-path'))) {
+if(/.*\.js$/.test(document.location.pathname)) {
+  addLintButton();
+}
 
-$('#dolint').click(function () {
+$('#slider').bind('DOMSubtreeModified', function () {
+  //if(/.*\.js\/$/.test($(this).find('.breadcrumb:last').attr('data-path'))) {
+  if(/.*\.js$/.test(document.location.pathname)) {
+      addLintButton();
+  } else {
+    removeLintButton();
+  }
+});
+
+function doLint() {
+  var rawlink = document.getElementById('raw-url');
   $.get(rawlink.href, function (source) {
     var result = JSLINT(source, { maxerr:500000} );
     if(!result) {
@@ -21,6 +42,6 @@ $('#dolint').click(function () {
       }
     }
   });
-});
+}
 
 })();
