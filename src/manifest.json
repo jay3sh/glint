@@ -1,0 +1,27 @@
+{
+  "name": "Glint",
+  "version": "0.1",
+
+  "description": "Integrated JSLinting for Javascript hosted on Github",
+  "icons":{
+    "16" : "images/icon16.png",
+    "28" : "images/icon28.png",
+    "48" : "images/icon48.png",
+    "128" : "images/icon128.png"
+  },
+  "page_action":{
+    "default_icon" : "images/icon16.png"
+  },
+  "options_page":"options.html",
+  "content_scripts":[{
+    "matches" : ["https://github.com/*"],
+    "js" : ["jquery.min.js","jslint.js","glint.js","tipsy.js"],
+    "css" : ["glint.css","tipsy.css"],
+    "run_at" : "document_end"
+  }],
+  "permissions": [
+    "tabs",
+    "https://github.com/*",
+    "https://raw.github.com/*"
+  ]
+}
